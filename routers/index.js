@@ -9,10 +9,6 @@ let userData = {
   user_id: null
 }
 
-let password = function(time) {
-  return md5('blankshsh' + time).substring(16)
-}
-
 exports.sdxiu = function(req, res) {
   axios({
     url: 'https://blankshsh.herokuapp.com/api/sdxiu',

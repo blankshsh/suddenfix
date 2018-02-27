@@ -20,7 +20,10 @@ npm run build
 ![](http://optmmw8fy.bkt.clouddn.com/suddenfix.png)
 
 ## 技能点
-### heroku nodejs axios  cube-ui better-scroll amap
+### heroku nodejs axios cube-ui better-scroll amap
 
 ## 简介
 ### 后台搭建在heroku上，可能会出现访问慢的情况
+
+## Vue
+### vue-router vuex
