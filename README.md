@@ -17,7 +17,7 @@ npm run build
 ```
 
 ## 项目预览
-### [链接](https://blankshsh.herokuapp.com/suddenfix.html)
+### [在线预览链接](https://blankshsh.herokuapp.com/suddenfix.html)
 
 ![](http://optmmw8fy.bkt.clouddn.com/suddenfix.png)
 
