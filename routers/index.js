@@ -2,7 +2,7 @@ const axios = require('axios')
 
 exports.sdxiu = function(req, res) {
   axios({
-    url: 'https://blankshsh.herokuapp.com/api/sdxiu',
+    url: 'http://blankshsh.herokuapp.com/api/sdxiu',
     method: 'POST',
     headers: {
       sign: req.get('sign'),

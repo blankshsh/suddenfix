@@ -1,7 +1,7 @@
 <template>
   <div class="wrp">
     <m-header :title="title" :hasBack='false'></m-header>
-    <cube-scroll ref="scroll" :listenScroll="true" class="scrollWrp" v-if='show'>
+    <cube-scroll :options="scrollOptions" ref="scroll" :listenScroll="true" class="scrollWrp" v-if='show'>
       <form v-on:submit.prevent="onSubmit">
         <ul class="formbox">
           <li :style='minHeight[0]' ref="brand">
@@ -98,7 +98,12 @@ export default {
       fixMalfunctionList: [],
       formData: {},
       functionid: -1,
-      options: {}
+      options: {},
+      scrollOptions: {
+        pullUpLoad: {
+          threshold: 0
+        }
+      }
     }
   },
   created() {},
@@ -112,7 +117,7 @@ export default {
       type: 'Fix',
       key: 'fixBrandList'
     }).then(res => {
-      // console.log(res)
+      console.log(res)
       this.show = true
       this.fixBrandList = res.data
       setTimeout(() => {
@@ -123,8 +128,8 @@ export default {
   methods: {
     setIndex: function(num, index) {
       var that = this
-      // console.log(this)
-      for (var i = 0; i < 6; i++) {
+      console.log(this)
+      for (var i = 0; i < 5; i++) {
         if (i === num) {
           Vue.set(that.dataIndex, i, index)
         }
@@ -132,7 +137,7 @@ export default {
           Vue.set(that.dataIndex, i, -1)
         }
       }
-      // console.log(that.dataIndex)
+      console.log(that.dataIndex)
     },
     setHeight: function(num) {
       var that = this
@@ -166,7 +171,7 @@ export default {
           }
         }
       }
-      // console.log($formData)
+      console.log($formData)
       that.formData = $formData
       this.$refs.scroll.refresh()
       setTimeout(() => {
@@ -189,7 +194,7 @@ export default {
     },
     model: function(index, item) {
       this.setIndex(1, index)
-      // console.log(item.hasOperators)
+      console.log(item.hasOperators)
       var that = this
       if (item.hasOperators) {
         var $key = 'fixOperatorsList'
@@ -257,7 +262,9 @@ export default {
     },
     getfunction: function(index, id) {
       this.formData.modelmalfunctionid = id
-      this.setIndex(5, index)
+      var $dataIndex = this.dataIndex
+      $dataIndex[5] = index
+      this.dataIndex = $dataIndex
       this._Toast("loading", '加载中', 1000)
       this.$store.commit('setData', this.formData)
       setTimeout(() => {
@@ -317,6 +324,7 @@ export default {
         border-bottom: .02rem solid #d4d4d4;
         color: #4dbdc3;
       }
+
       ul {
         padding: 0 0.25rem;
         display: flex;
@@ -326,6 +334,8 @@ export default {
         li {
           width: 3.15rem;
           height: 0.7rem;
+          box-sizing: border-box;
+          border: .02rem solid @blue;
           position: relative;
           margin-right: .2rem;
           margin-bottom: .4rem; // padding: .2rem;
@@ -333,7 +343,6 @@ export default {
             margin-right: 0
           }
           label {
-            border: .02rem solid @blue;
             box-sizing: border-box;
             width: 100%;
             height: 100%;
@@ -363,6 +372,10 @@ export default {
       }
     }
   }
+}
+
+.cube-pullup-wrapper {
+  display: none !important
 }
 
 </style>
