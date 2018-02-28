@@ -129,7 +129,7 @@ export default {
     setIndex: function(num, index) {
       var that = this
       console.log(this)
-      for (var i = 0; i < 5; i++) {
+      for (var i = 0; i < 6; i++) {
         if (i === num) {
           Vue.set(that.dataIndex, i, index)
         }
@@ -262,9 +262,7 @@ export default {
     },
     getfunction: function(index, id) {
       this.formData.modelmalfunctionid = id
-      var $dataIndex = this.dataIndex
-      $dataIndex[5] = index
-      this.dataIndex = $dataIndex
+      this.setIndex(5, index)
       this._Toast("loading", '加载中', 1000)
       this.$store.commit('setData', this.formData)
       setTimeout(() => {
@@ -334,8 +332,6 @@ export default {
         li {
           width: 3.15rem;
           height: 0.7rem;
-          box-sizing: border-box;
-          border: .02rem solid @blue;
           position: relative;
           margin-right: .2rem;
           margin-bottom: .4rem; // padding: .2rem;
@@ -343,6 +339,7 @@ export default {
             margin-right: 0
           }
           label {
+            border: .02rem solid @blue;
             box-sizing: border-box;
             width: 100%;
             height: 100%;

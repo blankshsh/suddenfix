@@ -525,6 +525,7 @@ export default {
         }
         .selectbox {
           select {
+            appearance: none;
             width: 190/@rem;
             margin-right: 20/@rem;
             height: 70/@rem;
@@ -533,8 +534,10 @@ export default {
             padding: 0.1rem 0.2rem;
             font-size: 28/@rem;
             text-align: center;
+            background: #fff;
             option {
               text-align: center;
+              background: #fff;
             }
             &:last-child {
               margin-right: 0;
