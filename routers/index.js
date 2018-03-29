@@ -2,7 +2,7 @@ const axios = require('axios')
 
 exports.sdxiu = function(req, res) {
   axios({
-    url: 'http://193.112.105.192/api/sdxiu',
+    url: 'https://www.blankshsh.cn/api/sdxiu',
     method: 'POST',
     headers: {
       sign: req.get('sign'),

@@ -10,7 +10,7 @@
             </div>
             <ul>
               <li v-for="(item,index) in fixBrandList">
-                <label :for="'brand'+item.fixbrand_id" v-text="item.brandname" @click="brand(index, item.fixbrand_id)" :class="{'active' : dataIndex[0] === index}"></label>
+                <label :for="'brand'+item.fixbrand_id" v-text="item.brandname" @click="brand(item.fixbrand_id)" :class="{'active' : formData.fixbrandid === item.fixbrand_id}"></label>
                 <input :id="'brand'+item.fixbrand_id" type="radio" name="fixbrandid" :value="item.fixbrand_id" v-model='formData.fixbrandid'>
               </li>
             </ul>
@@ -20,7 +20,7 @@
               <h1>手机型号</h1></div>
             <ul>
               <li v-for="(item,index) in fixModelList">
-                <label :for="'model'+item.fixmodel_id" v-text="item.modelname" @click="model(index, item)" :class="{'active' : dataIndex[1] === index }"></label>
+                <label :for="'model'+item.fixmodel_id" v-text="item.modelname" @click="model(item)" :class="{'active' : formData.fixmodelid === item.fixmodel_id }"></label>
                 <input :id="'model'+item.fixmodel_id" type="radio" name="fixmodelid" :value="item.fixmodel_id" v-model='formData.fixmodelid'>
               </li>
             </ul>
@@ -30,7 +30,7 @@
               <h1>运营商</h1></div>
             <ul>
               <li v-for="(item,index) in fixOperatorsList">
-                <label :for="'operators'+item.modeloperatorsid" v-text="item.operatorsname" @click="operators(index, item.modeloperatorsid)" :class="{'active' : dataIndex[2] === index }"></label>
+                <label :for="'operators'+item.modeloperatorsid" v-text="item.operatorsname" @click="operators(item.modeloperatorsid)" :class="{'active' : formData.modeloperatorsid === item.modeloperatorsid }"></label>
                 <input :id="'operators'+item.modeloperatorsid" type="radio" name="modeloperatorsid" :value="item.modeloperatorsid" v-model='formData.modeloperatorsid'>
               </li>
             </ul>
@@ -40,8 +40,8 @@
               <h1>颜色</h1></div>
             <ul>
               <li v-for="(item,index) in fixColorList">
-                <label :for="'color'+item.fixcolor_id" v-text="item.colorname" @click="color(index)" :class="{'active' : dataIndex[3] === index }"></label>
-                <input :id="'color'+item.fixcolor_id" type="radio" name="modelcolorid" :value="item.modelcolorid" v-model='formData.modelcolorid'>
+                <label :for="'color' + item.fixcolor_id" v-text="item.colorname" @click="color(index)" :class="{'active' : formData.modelcolorid === item.modelcolorid }"></label>
+                <input :id="'color' + item.fixcolor_id" type="radio" name="modelcolorid" :value="item.modelcolorid" v-model='formData.modelcolorid'>
               </li>
             </ul>
           </li>
@@ -50,7 +50,7 @@
               <h1>选择问题类型</h1></div>
             <ul>
               <li v-for="(item,index) in fixProblemList">
-                <label :for="'problem'+item.fixproblem_id" v-text="item.problemname" @click="problem(index, item)" :class="{'active' : dataIndex[4] === index }"></label>
+                <label :for="'problem'+item.fixproblem_id" v-text="item.problemname" @click="problem(item)" :class="{'active' : formData.fixproblemid === item.fixproblem_id }"></label>
                 <input :id="'problem'+item.fixproblem_id" type="radio" name="fixproblemid" :value="item.fixproblem_id" v-model='formData.fixproblemid'>
               </li>
             </ul>
@@ -60,7 +60,7 @@
               <h1>选择故障类型</h1></div>
             <ul class="onelist">
               <li v-for="(item,index) in fixMalfunctionList">
-                <label :for="item.fixmalfunction_id" v-text="item.malfunctionname" @click="getfunction(index, item.modelmalfunctionid)" :class="{'active' : dataIndex[5] === index }"></label>
+                <label :for="item.fixmalfunction_id" v-text="item.malfunctionname" @click="getfunction(item.fixmalfunction_id)" :class="{'active' : fixmalfunctionid === item.fixmalfunction_id }"></label>
                 <input :id="item.fixmalfunction_id" type="radio" name="fixmalfunctionid" :value="item.fixmalfunction_id" v-model='formData.fixmalfunctionid'>
               </li>
             </ul>
@@ -89,7 +89,6 @@ export default {
         "fixproblemid", "modelproblemid", "modelmalfunctionid", "fixmalfunctionid"
       ],
       refsList: ['brand', 'model', 'operators', 'color', 'problem', 'getfunction'],
-      dataIndex: [-1, -1, -1, -1, -1, -1],
       fixBrandList: [],
       fixModelList: [],
       fixOperatorsList: [],
@@ -103,14 +102,11 @@ export default {
         pullUpLoad: {
           threshold: 0
         }
-      }
+      },
+      fixmalfunctionid: null
     }
   },
-  created() {},
-  activated: function() {
-    // 只对vue-router的路由生效
-  },
-  mounted() {
+  created() {
     this.$store.commit('setData', '')
     // this.setHeight(0)
     sdxiu({
@@ -118,49 +114,35 @@ export default {
       key: 'fixBrandList'
     }).then(res => {
       console.log(res)
-      this.show = true
-      this.fixBrandList = res.data
-      setTimeout(() => {
-        this.height = this.$refs.scroll.$el.offsetHeight
-      }, 50)
+      this.$nextTick(() => {
+        this.show = true
+        this.fixBrandList = res.data
+        this.$nextTick(() => {
+          this.height = this.$refs.scroll.$el.offsetHeight
+        })
+      })
     })
   },
+  activated: function() {
+    // 只对vue-router的路由生效
+  },
+  mounted() {},
+  computed: {},
   methods: {
-    setIndex: function(num, index) {
-      var that = this
-      console.log(this)
-      for (var i = 0; i < 6; i++) {
-        if (i === num) {
-          Vue.set(that.dataIndex, i, index)
-        }
-        if (i > num) {
-          Vue.set(that.dataIndex, i, -1)
-        }
-      }
-      console.log(that.dataIndex)
-    },
-    setHeight: function(num) {
-      var that = this
-      return new Promise((resolve, reject) => {
-        var $minHeight = that.minHeight
-        var $height = that.height
-        for (var i = 0; i < 6; i++) {
-          if (i <= num) {
-            $minHeight[i] = ''
-          } else {
-            $minHeight[i] = 'min-height:' + $height + 'px'
-          }
-        }
-        that.minHeight = $minHeight
-        resolve()
-      })
-    },
     _Scorll: function(num) {
       var that = this
+      var $minHeight = that.minHeight
+      var $height = that.height
       var $formData = that.formData
       var $datalist = that.datalist
       var $formlist = that.formlist
+
       for (var i = 0; i < 6; i++) {
+        if (i <= num) {
+          $minHeight[i] = ''
+        } else {
+          $minHeight[i] = 'min-height:' + $height + 'px'
+        }
         if (i > num) {
           that[$datalist[i + 1]] = []
           if (num === 4) {
@@ -171,30 +153,25 @@ export default {
           }
         }
       }
-      console.log($formData)
+      that.minHeight = $minHeight
       that.formData = $formData
-      this.$refs.scroll.refresh()
-      setTimeout(() => {
-        var $next = this.$refs[this.refsList[num + 1]] || this.$refs[this.refsList[num + 2]]
-        this.$refs.scroll.scrollTo(0, -$next.offsetTop, 300)
-      }, 40)
+      that.$nextTick(() => {
+        that.$refs.scroll.refresh()
+        var $next = that.$refs[that.refsList[num + 1]] || that.$refs[that.refsList[num + 2]]
+        that.$refs.scroll.scrollTo(0, -$next.offsetTop, 300)
+      })
     },
-    brand: function(index, id) {
-      this.setIndex(0, index)
+    brand: function(id) {
       sdxiu({
         type: 'Fix',
         key: 'fixModelList',
         data: { fixbrandid: id }
       }).then(res => {
         this.fixModelList = res.data
-        this.setHeight(0).then(() => {
-          this._Scorll(0)
-        })
+        this._Scorll(0)
       })
     },
-    model: function(index, item) {
-      this.setIndex(1, index)
-      console.log(item.hasOperators)
+    model: function(item) {
       var that = this
       if (item.hasOperators) {
         var $key = 'fixOperatorsList'
@@ -210,44 +187,35 @@ export default {
         that.fixColorList = []
         that[$key] = res.data
         // console.log(this)
-        that.setHeight(1).then(() => {
-          if ($key === 'fixOperatorsList') {
-            that._Scorll(1)
-          } else {
-            that._Scorll(2)
-            this.formData[this.formlist[2]] = 0
-          }
-        })
+        if ($key === 'fixOperatorsList') {
+          that._Scorll(1)
+        } else {
+          that._Scorll(2)
+          this.formData[this.formlist[2]] = 0
+        }
       })
     },
-    operators: function(index, id) {
-      this.setIndex(2, index)
+    operators: function(id) {
       sdxiu({
         type: 'Fix',
         key: 'fixColorList',
         data: { fixmodelid: this.formData.fixmodelid }
       }).then(res => {
         this.fixColorList = res.data
-        this.setHeight(2).then(() => {
-          this._Scorll(2)
-        })
+        this._Scorll(2)
       })
     },
-    color: function(index) {
-      this.setIndex(3, index)
+    color: function() {
       sdxiu({
         type: 'Fix',
         key: 'fixProblemList',
         data: { fixmodelid: this.formData.fixmodelid }
       }).then(res => {
         this.fixProblemList = res.data
-        this.setHeight(3).then(() => {
-          this._Scorll(3)
-        })
+        this._Scorll(3)
       })
     },
-    problem: function(index, item) {
-      this.setIndex(4, index)
+    problem: function(item) {
       sdxiu({
         type: 'Fix',
         key: 'fixMalfunctionList',
@@ -255,34 +223,20 @@ export default {
       }).then(res => {
         this.formData.modelproblemid = item.modelproblemid
         this.fixMalfunctionList = res.data
-        this.setHeight(4).then(() => {
-          this._Scorll(4)
-        })
+        this._Scorll(4)
       })
     },
-    getfunction: function(index, id) {
-      this.formData.modelmalfunctionid = id
-      this.setIndex(5, index)
+    getfunction: function(id) {
+      this.fixmalfunctionid = id
       this._Toast("loading", '加载中', 1000)
       this.$store.commit('setData', this.formData)
       setTimeout(() => {
         this.$router.push({ path: '/fix/toOrder' })
       }, 1000)
-      // console.log(this.formData)
-      // sdxiu({
-      //   type: 'Fix',
-      //   key: 'fixInfo',
-      //   data: this.formData
-      // }).then(res => {
-      //   console.log(res)
-      // })
-    },
-    onSubmit: function() {
-      console.log(this.formData)
     }
   },
   components: {
-    mHeader,
+    mHeader
   }
 }
 
