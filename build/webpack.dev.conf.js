@@ -1,15 +1,13 @@
 'use strict'
 const utils = require('./utils')
 const webpack = require('webpack')
-const config = require('../config')
+const config
+ = require('../config')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
-const api = require('../routers')
-const bodyParser = require('body-parser')
-let jsonParser = bodyParser.json()
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -23,9 +21,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    before(app) {
-      app.post('/api/sdxiu', jsonParser, api.sdxiu)
-    },
     clientLogLevel: 'warning',
     historyApiFallback: true,
     hot: true,
