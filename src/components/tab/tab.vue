@@ -1,6 +1,6 @@
 <template>
   <div class="tabbox">
-    <router-link tag="div" class="tab-item" :key="item.class" :to="item.to" v-for="(item,key) in tabList">
+    <router-link tag="div" v-for="(item,key) in tabList" class="tab-item" :key="item.class" :to="item.to">
       <i class="icon" :class="item.class"></i>
       <span class="tab-link" v-text="item.title"></span>
     </router-link>
