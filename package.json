@@ -20,6 +20,7 @@
     "better-scroll": "^1.8.0",
     "clipboard": "^1.7.1",
     "cube-ui": "^1.5.0",
+    "eslint": "^5.15.1",
     "fastclick": "^1.0.6",
     "jsonp": "^0.2.1",
     "md5": "^2.2.1",

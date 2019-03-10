@@ -11,7 +11,7 @@ function password() {
 
 export function sdxiu(data) {
   return axios({
-    url: 'https://api.blankshsh.cn/api/sdxiu',
+    url: 'https://api.blankshsh.club/api/sdxiu',
     method: 'POST',
     headers: password(),
     data: data
